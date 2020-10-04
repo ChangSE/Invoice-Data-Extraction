@@ -1,5 +1,6 @@
 const supertest = require('supertest');
 const mongoose = require('mongoose');
+const keys = require('../config/keys');
 
 describe('API Tests', () => {
   let server;
@@ -7,10 +8,12 @@ describe('API Tests', () => {
   before(() => {
     const api = require('../index');
     server = api.server;
+    mongoose.connect(keys.mongoURI);
     request = supertest(api.app);
   });
 
   after(() => {
+    mongoose.connection.close();
     server.close();
   });
 
@@ -26,7 +29,7 @@ describe('API Tests', () => {
     it('invoice is uploaded', function (done) {
         request.post('/upload')
             .field('email', 'invoice@test.com')
-            .attach('file', 'invoices/HubdocInvoice1.pdf')
+            .attach('file', 'invoices/Invoice1.pdf')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(201)
@@ -63,7 +66,7 @@ describe('API Tests', () => {
    */
     it('no email variable is posted', function (done) {
         request.post('/upload')
-            .attach('file', 'invoices/HubdocInvoice1.pdf')
+            .attach('file', 'invoices/Invoice1.pdf')
             .set('Accept', 'application/json')
             .expect('Content-Type','text/html; charset=utf-8')
             .expect(400)
@@ -80,7 +83,7 @@ describe('API Tests', () => {
     it('empty email is posted', function (done) {
         request.post('/upload')
             .field({"email": ""})
-            .attach('file', 'invoices/HubdocInvoice1.pdf')
+            .attach('file', 'invoices/Invoice1.pdf')
             .set('Accept', 'application/json')
             .expect('Content-Type','text/html; charset=utf-8')
             .expect(400)

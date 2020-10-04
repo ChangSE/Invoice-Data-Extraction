@@ -84,7 +84,6 @@ app.post('/upload',  upload.single('file'), (req, res, next) => {
       var vendor = filtered[2];
       payload.vendorName = vendor;
 
-
       //after invoice receipt
       if(receiptIndex !== -1){
          data = data.substring(receiptIndex);
@@ -150,6 +149,7 @@ app.post('/upload',  upload.single('file'), (req, res, next) => {
 
       const invoice = new Invoice(payload);
       await invoice.save();
+
       res.status(201).json({id : invoice._id});
       next();
     }catch(e){
