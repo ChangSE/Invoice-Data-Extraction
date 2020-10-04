@@ -1,9 +1,7 @@
 const bodyParser = require('body-parser');
 const multer  = require('multer');
-// const mongoose = require('mongoose');
 const pdfUtil = require('pdf-to-text');
-const invoiceParser = require('../services/invoiceParser.js').invoiceParser;
-//const Invoice = mongoose.model('invoices');
+const invoiceParser = require('../services/invoiceParser').invoiceParser;
 
 module.exports = app => {
   var storage = multer.diskStorage({
